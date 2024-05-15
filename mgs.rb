@@ -4,6 +4,7 @@ require 'mongo'
 require 'slop'
 require 'json'
 require 'awesome_print'
+require 'sinatra'
 
 opts = Slop.parse do |o|
   o.string '-h', '--host', 'the connection string for the MongoDB cluster (default: localhost)',
@@ -22,3 +23,17 @@ DB = Mongo::Client.new(opts[:host], database: opts[:database])
 coll = DB[opts[:collection]]
 
 ap coll.find().first
+
+# https://hanoian.com/content/index.php/12-using-swagger-to-do-document-driven-development
+# mongodb+srv://<username>:<password>@iot.px8kv.mongodb.net/
+
+
+get '/' do
+  'Hello world!'
+  ap coll.find().first
+end
+
+post '/payload' do
+  push = JSON.parse(request.body.read)
+  puts "I got some JSON: #{push.inspect}"
+end 
