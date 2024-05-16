@@ -10,7 +10,7 @@ opts = Slop.parse do |o|
   o.string '-h', '--host', 'the connection string for the MongoDB cluster (default: localhost)',
            default: 'mongodb://localhost'
   o.string '-d', '--database', 'the database to use (default: hs2)', default: 'mgs'
-  o.string '-c', '--collection', 'the collection to use (default: p1)', default: 'temp'
+  o.string '-c', '--collection', 'the collection to use (default: p1)', default: 'test'
 end
 
 # Connect to the DB
@@ -30,7 +30,7 @@ ap coll.find().first
 
 get '/' do
   'Hello world!'
-  ap coll.find().first
+  ap coll.find().first.to_s()
 end
 
 post '/payload' do
