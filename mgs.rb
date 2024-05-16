@@ -12,15 +12,9 @@ require 'json'
 
 
 DB = Mongo::Client.new(ARGV[0])
-#iotDB = DB.use(:iot)
-
-
 coll = DB[ARGV[1]]
-# set the logger level for the mongo driver
-# Mongo::Logger.logger.level = ::Logger::WARN
+Mongo::Logger.logger.level = ::Logger::WARN
 
-
-#set :bind, "0.0.0.0"
 
 get '/' do
   redirect 'http://jimb.cc/'
@@ -35,10 +29,7 @@ post '/' do
 end
 
 
-post "/v1/garden/" do
-  # Chris, What does this do? :	
-  request.body.rewind  # in case someone already read it
-  puts request
+post "/v1/telemetry/" do
 
   metaData = Hash.new
 
@@ -62,12 +53,32 @@ post "/v1/garden/" do
   body "Received, not yet actioned"
 
   # insert into collection
-  result = iotDB[coll].insert_one(data)
+  result = coll.insert_one(data)
   ap result
   puts result.n #=> returns 1, because 1 document was inserted.
 end
 
 
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+=begin
 get '/latest/:num/' do
   #db.garden.find().sort({ts:-1}).limit(10)
     documents = iotDB[coll].find().sort({:ts => -1}).limit(params['num'].to_i)
@@ -119,4 +130,4 @@ get '/lastupdate/:sensor/' do
 end
 
 
-
+=end
